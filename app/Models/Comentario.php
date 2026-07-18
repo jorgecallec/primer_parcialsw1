@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Comentario extends Model
+{
+    //
+    protected $table = 'comentarios';
+    protected $fillable = [
+        'usuario_id',
+        'contenido',
+        'calificacion',
+        'estado',
+    ];
+    public function usuario()
+    {
+        return $this->belongsTo(User::class,'usuario_id');
+    }
+}
