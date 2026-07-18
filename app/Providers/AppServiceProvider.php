@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         //     );
         // });
         // }
-        if (!app()->environment('local')) {
+        if (!app()->environment('local') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
             URL::forceScheme('https');
         }
     }
