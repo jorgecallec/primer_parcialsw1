@@ -23,16 +23,16 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#inicio" className="text-foreground hover:text-primary transition-colors font-medium">
+            <a href="/#inicio" className="text-foreground hover:text-primary transition-colors font-medium">
               Inicio
             </a>
-            <a href="#habitaciones" className="text-foreground hover:text-primary transition-colors font-medium">
+            <a href="/#habitaciones" className="text-foreground hover:text-primary transition-colors font-medium">
               Habitaciones
             </a>
-            <a href="#servicios" className="text-foreground hover:text-primary transition-colors font-medium">
+            <a href="/#servicios" className="text-foreground hover:text-primary transition-colors font-medium">
               Servicios
             </a>
-            <a href="#contacto" className="text-foreground hover:text-primary transition-colors font-medium">
+            <a href="/#contacto" className="text-foreground hover:text-primary transition-colors font-medium">
               Contacto
             </a>
           </nav>
@@ -65,16 +65,16 @@ const Header = () => {
         {mobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border animate-fade-in">
             <div className="flex flex-col gap-4">
-              <a href="#inicio" className="text-foreground hover:text-primary transition-colors font-medium py-2">
+              <a href="/#inicio" className="text-foreground hover:text-primary transition-colors font-medium py-2">
                 Inicio
               </a>
-              <a href="#habitaciones" className="text-foreground hover:text-primary transition-colors font-medium py-2">
+              <a href="/#habitaciones" className="text-foreground hover:text-primary transition-colors font-medium py-2">
                 Habitaciones
               </a>
-              <a href="#servicios" className="text-foreground hover:text-primary transition-colors font-medium py-2">
+              <a href="/#servicios" className="text-foreground hover:text-primary transition-colors font-medium py-2">
                 Servicios
               </a>
-              <a href="#contacto" className="text-foreground hover:text-primary transition-colors font-medium py-2">
+              <a href="/#contacto" className="text-foreground hover:text-primary transition-colors font-medium py-2">
                 Contacto
               </a>
               <Link href="/login" className="py-2">
