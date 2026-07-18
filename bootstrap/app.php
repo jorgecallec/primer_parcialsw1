@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
+        // ✅ Confiar en todos los proxies (necesario en Railway / Render / etc. para HTTPS/Vite)
+        $middleware->trustProxies(at: '*');
+
         // ✅ Agregar CORS para n8n y APIs externas
         $middleware->use([\Illuminate\Http\Middleware\HandleCors::class]);
 
