@@ -20,6 +20,8 @@ use App\Models\Servicio;
 use App\Models\Platillo;
 use App\Models\TipoHabitacion;
 use App\Models\TipoPago;
+use App\Models\Categoria;
+use App\Models\Comentario;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 
@@ -27,12 +29,88 @@ class Robust3000Seeder extends Seeder
 {
     public function run(): void
     {
-        $this->command->info('🚀 Iniciando Sembrador Robust3000...');
+        $this->command->info('🚀 Iniciando Sembrador Robust3000 de Alto Rendimiento...');
         
         // 1. Asegurar roles
         $clienteRole = Role::firstOrCreate(['name' => 'cliente']);
         
-        // 2. Cargar datos base necesarios
+        // 2. Generar Platillos Masivos (200 platillos temáticos de hotel)
+        $this->command->info('🍽️ Generando Platillos Masivos...');
+        $platosNombres = ['Sopa', 'Ensalada', 'Filete', 'Pescado', 'Pollo', 'Arroz', 'Pasta', 'Postre', 'Tarta', 'Café', 'Jugo', 'Cóctel', 'Vino', 'Cerveza', 'Hamburguesa', 'Sándwich', 'Pizza', 'Tacos', 'Ceviche', 'Lomo'];
+        $platosAdjetivos = ['Especial', 'de la Casa', 'Gourmet', 'Imperial', 'Tradicional', 'Campestre', 'Mariano', 'Tropical', 'Cedros', 'Rústico', 'de la Huerta', 'Mediterráneo', 'al Horno', 'a la Parrilla', 'Flambeado', 'Exótico'];
+        $categoriasPlatillos = Categoria::where('tipo', 'platillo')->get();
+        
+        if (!$categoriasPlatillos->isEmpty()) {
+            for ($i = 0; $i < 200; $i++) {
+                $nombrePlatillo = $platosNombres[array_rand($platosNombres)] . ' ' . $platosAdjetivos[array_rand($platosAdjetivos)] . ' ' . rand(1, 99);
+                Platillo::firstOrCreate(
+                    ['nombre' => $nombrePlatillo],
+                    [
+                        'categoria_id' => $categoriasPlatillos->random()->id,
+                        'nombre' => $nombrePlatillo,
+                        'descripcion' => "Exquisito platillo preparado por nuestro chef ejecutivo usando los ingredientes más selectos de la región.",
+                        'ingredientes' => "Ingredientes frescos seleccionados.",
+                        'image_url' => 'https://public.images/platillo_default.jpg',
+                        'precio' => rand(25, 250),
+                        'estado' => 'disponible'
+                    ]
+                );
+            }
+        }
+
+        // 3. Generar Servicios Masivos (100 servicios de hotel)
+        $this->command->info('🛎️ Generando Servicios Masivos...');
+        $serviciosNombres = ['Spa', 'Masaje', 'Tratamiento', 'Clase', 'Tour', 'Transporte', 'Alquiler', 'Acceso', 'Sesión', 'Guía', 'Servicio'];
+        $serviciosDetalle = ['Relajante', 'Premium', 'VIP', 'Privado', 'Grupal', 'Familiar', 'Nocturno', 'Express', 'Completo', 'Personalizado', 'de Lujo'];
+        $categoriasServicios = Categoria::where('tipo', 'servicio')->get();
+        
+        if (!$categoriasServicios->isEmpty()) {
+            for ($i = 0; $i < 100; $i++) {
+                $nombreServicio = $serviciosNombres[array_rand($serviciosNombres)] . ' ' . $serviciosDetalle[array_rand($serviciosDetalle)] . ' ' . rand(1, 99);
+                Servicio::firstOrCreate(
+                    ['nombre' => $nombreServicio],
+                    [
+                        'categoria_id' => $categoriasServicios->random()->id,
+                        'nombre' => $nombreServicio,
+                        'descripcion' => "Servicio exclusivo diseñado para la comodidad, relax y disfrute de nuestros huéspedes en Hotel Los Cedros.",
+                        'precio' => rand(50, 450),
+                        'estado' => 'activo'
+                    ]
+                );
+            }
+        }
+
+        // 4. Generar Habitaciones Físicas Masivas (500 habitaciones distribuidas en 5 pisos)
+        $this->command->info('🏠 Generando Habitaciones Físicas Masivas (500 habitaciones)...');
+        $pisos = ['1', '2', '3', '4', '5'];
+        $alas = ['Torre Norte', 'Torre Sur', 'Ala Este', 'Ala Oeste', 'Edificio Principal'];
+        $vistas = ['Mar', 'Jardín', 'Ciudad', 'Montaña', 'Piscina', 'Interior'];
+        $estados = ['disponible', 'ocupada', 'limpieza', 'mantenimiento'];
+        $tiposHab = TipoHabitacion::all();
+        
+        if (!$tiposHab->isEmpty()) {
+            foreach ($pisos as $piso) {
+                for ($num = 1; $num <= 100; $num++) {
+                    $codigo = $piso . str_pad($num, 2, '0', STR_PAD_LEFT);
+                    
+                    if (!HabitacionEvento::where('codigo', $codigo)->exists()) {
+                        $tipo = $tiposHab->random();
+                        HabitacionEvento::create([
+                            'codigo' => $codigo,
+                            'tipo_habitacion_id' => $tipo->id,
+                            'nombre' => $tipo->nombre,
+                            'estado' => $estados[array_rand($estados)],
+                            'piso' => $piso,
+                            'ala_seccion' => $alas[array_rand($alas)],
+                            'vista' => $vistas[array_rand($vistas)],
+                            'ultima_limpieza' => Carbon::now()->subDays(rand(0, 5)),
+                        ]);
+                    }
+                }
+            }
+        }
+
+        // Cargar datos cargados recientemente para usar en las reservas
         $tiposHabitacion = TipoHabitacion::where('tipo', 'habitacion')->get();
         $tipoPagos = TipoPago::all();
         $recepcionistas = Recepcionista::all();
@@ -40,13 +118,8 @@ class Robust3000Seeder extends Seeder
         $platillos = Platillo::where('estado', 'disponible')->get();
         $habitacionesEventos = HabitacionEvento::all();
 
-        if ($tiposHabitacion->isEmpty() || $tipoPagos->isEmpty() || $recepcionistas->isEmpty() || $habitacionesEventos->isEmpty()) {
-            $this->command->error('❌ Faltan datos base en las tablas (tipos de habitación, recepcionistas, habitaciones_eventos). Por favor corre los otros seeders primero.');
-            return;
-        }
-
+        // 5. Generar Clientes Masivos (1000 clientes con datos reales)
         $cantidad = 1000;
-        
         $this->command->info("👤 Generando {$cantidad} Clientes...");
         
         $nombres = ['Juan', 'María', 'José', 'Carlos', 'Luis', 'Ana', 'Pedro', 'Rosa', 'Jorge', 'Carmen', 'Miguel', 'Isabel', 'Roberto', 'Patricia', 'Daniel', 'Gabriela', 'Fernando', 'Laura', 'Ricardo', 'Silvia'];
@@ -92,13 +165,39 @@ class Robust3000Seeder extends Seeder
         }
         DB::table('clientes')->insert($clientesBatch);
         
-        $this->command->info("📅 Generando {$cantidad} Reservas, Check-ins y Cuentas asociadas...");
+        // 6. Generar Comentarios Masivos (1000 comentarios temáticos)
+        $this->command->info('💬 Generando Comentarios Masivos...');
+        $comentariosTextos = [
+            "Excelente servicio, el personal fue súper amable y las instalaciones son de primer nivel.",
+            "Me encantó la habitación, la vista al jardín es espectacular. Muy recomendado.",
+            "El restaurante del hotel ofrece platillos exquisitos. Una experiencia gastronómica inolvidable.",
+            "Un hotel muy tranquilo y elegante. Perfecto para descansar en familia.",
+            "El spa es increíble, salí completamente renovado. Volveré sin duda.",
+            "Muy limpio, cómodo y con una ubicación excelente. Los servicios son de primera.",
+            "Las suites presidenciales son espectaculares. El trato fue muy VIP.",
+            "Una estadía perfecta. Los salones de eventos son muy amplios y modernos.",
+            "La piscina y las áreas verdes están muy bien cuidadas. Excelente ambiente.",
+            "El desayuno buffet es completísimo y muy delicioso. El personal de room service es muy atento."
+        ];
         
+        foreach ($creados as $user) {
+            if (rand(1, 10) <= 8) { // 80% de probabilidad de dejar comentario
+                Comentario::create([
+                    'usuario_id' => $user->id,
+                    'calificacion' => rand(4, 5),
+                    'contenido' => $comentariosTextos[array_rand($comentariosTextos)],
+                    'estado' => 'visible',
+                    'created_at' => Carbon::now()->subDays(rand(1, 60)),
+                ]);
+            }
+        }
+
+        // 7. Generar Reservas, Check-ins, Cuentas, Consumos y Pagos (1000 transacciones de cliente)
+        $this->command->info("📅 Generando {$cantidad} Reservas, Check-ins y Cuentas asociadas...");
         $fechaInicioSeeder = Carbon::create(2024, 1, 1);
         $fechaFinSeeder = Carbon::now();
 
         foreach ($creados as $index => $user) {
-            // Fecha aleatoria para la reserva
             $fechaReserva = Carbon::createFromTimestamp(rand($fechaInicioSeeder->timestamp, $fechaFinSeeder->timestamp));
             $diasEstadia = rand(1, 5);
             $fechaEntrada = $fechaReserva->copy()->addDays(rand(1, 10));
@@ -155,7 +254,9 @@ class Robust3000Seeder extends Seeder
             ]);
 
             // 4. Crear Check-in
-            $habitacion = $habitacionesEventos->where('tipo_habitacion_id', $tipoHab->id)->random();
+            $habitacionesValidas = $habitacionesEventos->where('tipo_habitacion_id', $tipoHab->id);
+            $habitacion = !$habitacionesValidas->isEmpty() ? $habitacionesValidas->random() : $habitacionesEventos->random();
+            
             $checkin = Checkin::create([
                 'reserva_id' => $reserva->id,
                 'recepcionista_id' => $recepcionistas->random()->id,
