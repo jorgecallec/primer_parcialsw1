@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         //     );
         // });
         // }
-        if (config('app.env') === 'production') {
+        if (!app()->environment('local')) {
             URL::forceScheme('https');
         }
     }
