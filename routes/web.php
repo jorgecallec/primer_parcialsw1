@@ -31,6 +31,23 @@ use App\Models\Promo;
 use App\Models\TipoHabitacion;
 use App\Models\Comentario; // ✅ Importar el modelo
 
+Route::get('/run-seed', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate');
+        \Illuminate\Support\Facades\Artisan::call('db:seed');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Database migrated and seeded successfully!',
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+
 Route::get('/', function () {
     // ✅ Obtener promociones públicas
     $promociones = Promo::where('estado', 'activa')
