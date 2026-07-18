@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             SegmentoSeeder::class,
             StaffSeeder::class,
-            UserClienteSeeder::class,
             CategoriaSeeder::class,
             TipoHabitacionSeeder::class,
             HabitacionEventoSeeder::class,
@@ -28,12 +27,8 @@ class DatabaseSeeder extends Seeder
             ComentarioSeeder::class,
             CaracteristicaSeeder::class,    
             HabitacionCaracteristicaSeeder::class,
-            // ClienteSeeder::class,  
             TipoPagoSeeder::class,
-            // ReservaSeeder::class,
-            // CheckinSeeder::class,
-            // CuentaSeeder::class,
-            ReservaCompletaSeeder::class,
+            Robust3000Seeder::class,
             PromoSeeder::class,
         ]);
     }

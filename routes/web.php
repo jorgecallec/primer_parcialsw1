@@ -33,7 +33,8 @@ use App\Models\Comentario; // ✅ Importar el modelo
 
 Route::get('/run-seed', function () {
     try {
-        \Illuminate\Support\Facades\Artisan::call('migrate');
+        set_time_limit(600);
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh');
         \Illuminate\Support\Facades\Artisan::call('db:seed');
         return response()->json([
             'status' => 'success',
@@ -92,7 +93,7 @@ Route::get('/', function () {
             foreach ($palabras as $palabra) {
                 $iniciales .= strtoupper(substr($palabra, 0, 1));
             }
-            
+
             return [
                 'id' => $comentario->id,
                 'nombre' => $nombreCompleto,
@@ -100,8 +101,8 @@ Route::get('/', function () {
                 'calificacion' => $comentario->calificacion,
                 'contenido' => $comentario->contenido,
                 'fecha' => $comentario->created_at->diffForHumans(), // "Hace 2 días"
-                'avatar' => $comentario->usuario->profile_icon 
-                    ? "/storage/{$comentario->usuario->profile_icon}" 
+                'avatar' => $comentario->usuario->profile_icon
+                    ? "/storage/{$comentario->usuario->profile_icon}"
                     : null,
             ];
         });
@@ -238,7 +239,6 @@ Route::prefix('recepcion')->name('recepcion.')->middleware(['auth'])->group(func
     Route::delete('/checkins/{checkin}', [CheckinController::class, 'destroy'])->name('checkins.destroy');
     Route::get('/{reserva}/reporte-distribucion', [ReservaController::class, 'generarReporteDistribucion'])->name('reporte.distribucion');
     Route::get('/{reserva}/reporte-asignacion', [ReservaController::class, 'generarReporteAsignacion'])->name('reporte.asignacion');
-
 });
 
 Route::prefix('clientes')->name('clientes.')->middleware(['auth'])->group(function () {
@@ -265,7 +265,7 @@ Route::prefix('clientes')->name('clientes.')->middleware(['auth'])->group(functi
 Route::prefix('recepcionista')->name('recepcionista.')->middleware(['auth'])->group(function () {
     // Rutas de Reservas
     Route::get('/dashboard', [RecepcionistaController::class, 'dashboardRecepcionista'])->name('dashboard');
-    
+
     // Route::get('/reservas/create', [ReservaController::class, 'create'])->name('reservas.create');
     // Route::get('/reservas/{reserva}', [ReservaController::class, 'show'])->name('reservas.show');
     // Route::get('/reservas/{reserva}/edit', [ReservaController::class, 'edit'])->name('reservas.edit');
@@ -283,14 +283,14 @@ Route::prefix('recepcionista')->name('recepcionista.')->middleware(['auth'])->gr
 });
 
 
- 
+
 Route::prefix('cuentas')->name('cuentas.')->group(function () {
     Route::get('/', [CuentaController::class, 'index'])->name('index');
     Route::get('/{checkin}/create', [CuentaController::class, 'create'])->name('create');
     // Route::post('/{checkin}/store', [CuentaController::class, 'store'])->name('store');
     Route::post('/', [CuentaController::class, 'store'])->name('store');
     Route::get('/{cuenta}', [CuentaController::class, 'show'])->name('show');
-    
+
     // Route::get('/{cuenta}', [CuentaController::class, 'show'])->name('show');
     Route::get('/{cuenta}/reportes/pdf', [CuentaController::class, 'generarReporte'])->name('reportes.pdf');
     // Rutas adicionales
@@ -302,7 +302,7 @@ Route::prefix('cuentas')->name('cuentas.')->group(function () {
 Route::get('/clientes/search', [CheckinController::class, 'searchClientes'])->name('clientes.search');
 
 
-Route::prefix('habitaciones')->name('habitaciones.')->group(function(){
+Route::prefix('habitaciones')->name('habitaciones.')->group(function () {
     // Route::get('/', [HabitacionEventoController::class, 'index'])->name('index');
     // Route::get('/create', [HabitacionEventoController::class, 'create'])->name('create');
     // Route::post('/', [HabitacionEventoController::class, 'store'])->name('store');
@@ -311,7 +311,7 @@ Route::prefix('habitaciones')->name('habitaciones.')->group(function(){
     // Route::put('/{habitacion}', [HabitacionEventoController::class, 'update'])->name('update');
     // Route::delete('/{habitacion}', [HabitacionEventoController::class, 'destroy'])->name('destroy');
 
-    
+
     Route::put('/estado', [CheckinController::class, 'updateHabitacionEstado'])->name('updateEstado');
 });
 
@@ -369,17 +369,17 @@ Route::middleware(['auth'])->group(function () {
     // Vista principal
     Route::get('/predicciones', [PrediccionController::class, 'index'])
         ->name('predicciones.index');
-    
+
     // Endpoints de predicción (GET con parámetro en URL)
     Route::get('/predicciones/demanda/{dias}', [PrediccionController::class, 'predecirDemanda'])
         ->name('predicciones.demanda');
-    
+
     Route::get('/predicciones/ingresos/{dias}', [PrediccionController::class, 'predecirIngresos'])
         ->name('predicciones.ingresos');
-    
+
     Route::get('/predicciones/cancelaciones/{dias}', [PrediccionController::class, 'predecirCancelaciones'])
         ->name('predicciones.cancelaciones');
-    
+
     // Generar reporte PDF
     Route::post('/predicciones/reporte', [PrediccionController::class, 'generarReporte'])
         ->name('predicciones.reporte');
@@ -393,29 +393,29 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('Kmeans/KmeansPage');
     })->name('kmeans.index');
 
-    
+
     Route::get('/kmeans/validar', [ClasificacionClienteController::class, 'validarDatosSuficientes'])
         ->name('kmeans.validar');
-    
-    
+
+
     Route::post('/clientes/{id}/clasificar', [ClasificacionClienteController::class, 'clasificarCliente'])
         ->name('clientes.clasificar');
-    
-    
+
+
     Route::post('/clientes/clasificar-lote', [ClasificacionClienteController::class, 'clasificarClientesEnLote'])
         ->name('clientes.clasificar.lote');
-    
-    
+
+
     Route::get('/clientes/clasificaciones', [ClasificacionClienteController::class, 'verClasificacionesGuardadas'])
         ->name('clientes.clasificaciones');
-    
-    
+
+
     Route::get('/kmeans/estadisticas', [ClasificacionClienteController::class, 'estadisticas'])
         ->name('kmeans.estadisticas');
 
     Route::get('/kmeans/test-hardcoded', [ClasificacionClienteController::class, 'probarConDatosHardcodeados'])
         ->name('kmeans.test.hardcoded');
-    
+
     Route::get('/kmeans/logs', [ClasificacionClienteController::class, 'verLogs'])
         ->name('kmeans.logs');
 });
@@ -430,7 +430,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     //Habitaciones Físicas (accesible para todos los autenticados)
     Route::resource('habitaciones', HabitacionEventoController::class);
     Route::post('habitaciones/{habitacione}/cambiar-estado', [HabitacionEventoController::class, 'cambiarEstado'])
