@@ -97,7 +97,7 @@ class CustomAuthController extends Controller
             ]);
             DB::commit();
 
-            // Enviar correo de bienvenida al cliente
+            // Enviar correo de bienvenida directo desde Laravel PHP
             try {
                 Mail::to($user->email)->send(new BienvenidaClienteMail($user));
             } catch (Exception $mailException) {
