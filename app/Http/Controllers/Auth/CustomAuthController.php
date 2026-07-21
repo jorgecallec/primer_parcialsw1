@@ -79,9 +79,7 @@ class CustomAuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors(),
-            ], 422);
+            return back()->withErrors($validator);
         }
         try{
             DB::beginTransaction();
@@ -110,9 +108,7 @@ class CustomAuthController extends Controller
             return Inertia::location(route('login', ['email' => $user->email]));
         }catch(Exception $e){
             DB::rollBack();
-            return response()->json([
-                'message' => 'Error al registrar el usuario: ' . $e->getMessage(),
-            ], 500);
+            return back()->withErrors(['error' => 'Error al registrar el usuario: ' . $e->getMessage()]);
         }
     }
 }
