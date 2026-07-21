@@ -139,6 +139,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('recepcion/dashboard', [AuthController::class, 'recepcionDashboard'])->name('dashboard.recepcion');
     Route::get('cliente/dashboard', [AuthController::class, 'clientDashboard'])->name('dashboard.cliente');
 
+    // RUTA DE PRUEBA DE CORREO
+    Route::get('/test-mail', function () {
+        try {
+            $user = \App\Models\User::first();
+            \Illuminate\Support\Facades\Mail::to('jorgitochoque007@gmail.com')->send(new \App\Mail\BienvenidaClienteMail($user));
+            return '¡CORREO ENVIADO CON ÉXITO A jorgitochoque007@gmail.com!';
+        } catch (\Throwable $e) {
+            return 'ERROR AL ENVIAR CORREO: ' . $e->getMessage();
+        }
+    });
+
     Route::prefix('usuarios')->name('usuarios.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
