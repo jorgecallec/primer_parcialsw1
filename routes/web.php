@@ -130,6 +130,17 @@ Route::post('/custom-login', [CustomAuthController::class, 'login'])->name('cust
 Route::post('/custom-register', [CustomAuthController::class, 'register'])->name('custom.register');
 
 
+// RUTA DE PRUEBA DE CORREO (Pública para que no pida login)
+Route::get('/test-mail', function () {
+    try {
+        $user = \App\Models\User::first();
+        \Illuminate\Support\Facades\Mail::to('jorgitochoque007@gmail.com')->send(new \App\Mail\BienvenidaClienteMail($user));
+        return '¡CORREO ENVIADO CON ÉXITO A jorgitochoque007@gmail.com!';
+    } catch (\Throwable $e) {
+        return 'ERROR AL ENVIAR CORREO: ' . $e->getMessage();
+    }
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
@@ -138,17 +149,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('admin/dashboard', [AuthController::class, 'adminDashboard'])->name('dashboard.administrador');
     Route::get('recepcion/dashboard', [AuthController::class, 'recepcionDashboard'])->name('dashboard.recepcion');
     Route::get('cliente/dashboard', [AuthController::class, 'clientDashboard'])->name('dashboard.cliente');
-
-    // RUTA DE PRUEBA DE CORREO
-    Route::get('/test-mail', function () {
-        try {
-            $user = \App\Models\User::first();
-            \Illuminate\Support\Facades\Mail::to('jorgitochoque007@gmail.com')->send(new \App\Mail\BienvenidaClienteMail($user));
-            return '¡CORREO ENVIADO CON ÉXITO A jorgitochoque007@gmail.com!';
-        } catch (\Throwable $e) {
-            return 'ERROR AL ENVIAR CORREO: ' . $e->getMessage();
-        }
-    });
 
     Route::prefix('usuarios')->name('usuarios.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
