@@ -98,15 +98,15 @@ class CustomAuthController extends Controller
             ]);
             DB::commit();
 
-            // Enviar correo de bienvenida desde el código de Laravel (Backend Nativo)
-            // Usamos defer() para que se envíe en segundo plano y el usuario no tenga que esperar 30s si falla la conexión SMTP
-            defer(function () use ($user) {
-                try {
-                    Mail::to($user->email)->send(new BienvenidaClienteMail($user));
-                } catch (\Throwable $mailException) {
-                    Log::error('Error enviando correo de bienvenida: ' . $mailException->getMessage());
-                }
-            });
+            // Enviar correo de bienvenida al cliente vía HTTPS Webhook hacia n8n (Puerto 443)
+            try {
+                \Illuminate\Support\Facades\Http::timeout(5)->post('https://n8n-production-e621d.up.railway.app/webhook/bienvenida-cliente', [
+                    'name'  => $user->name,
+                    'email' => $user->email,
+                ]);
+            } catch (\Throwable $webhookException) {
+                \Illuminate\Support\Facades\Log::error('Error enviando webhook a n8n: ' . $webhookException->getMessage());
+            }
 
             // Redirigir al login con el email como parámetro
             return Inertia::location(route('login', ['email' => $user->email]));
