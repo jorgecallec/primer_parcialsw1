@@ -13,7 +13,7 @@ import { DataTable, Column, PaginationData } from '@/components/shared/DataTable
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { SearchFilter } from '@/components/shared/SearchFilter';
-import { Plus, Eye } from 'lucide-react';
+import { Plus, Eye, Trash2 } from 'lucide-react';
 import { route } from 'ziggy-js';
 
 // Tipo de usuario basado en el modelo User
@@ -118,6 +118,15 @@ export default function UsuariosPage({ usuariosPaginados, filters = {} }: Props)
 
 
 
+    // Manejar eliminación de usuario
+    const handleDeleteUser = (user: User) => {
+        if (confirm(`¿Estás seguro de que deseas eliminar permanentemente al usuario "${user.name}" (${user.email})?`)) {
+            router.delete(`/usuarios/${user.id}`, {
+                preserveScroll: true,
+            });
+        }
+    };
+
     const columns: Column<User>[] = [
         {
             key: 'id',
@@ -162,13 +171,24 @@ export default function UsuariosPage({ usuariosPaginados, filters = {} }: Props)
         {
             key: 'actions',
             label: 'Acciones',
-            className: 'w-[100px]',
+            className: 'w-[120px]',
             render: (user) => (
-                <Link href={`/usuarios/${user.id}`}>
-                    <Button variant="ghost" size="sm">
-                        <Eye className="h-4 w-4" />
+                <div className="flex items-center gap-1">
+                    <Link href={`/usuarios/${user.id}`}>
+                        <Button variant="ghost" size="sm" title="Ver detalle">
+                            <Eye className="h-4 w-4" />
+                        </Button>
+                    </Link>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-red-500 hover:text-red-700 hover:bg-red-500/10"
+                        title="Eliminar usuario"
+                        onClick={() => handleDeleteUser(user)}
+                    >
+                        <Trash2 className="h-4 w-4" />
                     </Button>
-                </Link>
+                </div>
             ),
         },
     ];

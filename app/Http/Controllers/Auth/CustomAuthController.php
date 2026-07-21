@@ -87,6 +87,7 @@ class CustomAuthController extends Controller
                 'name' => $request->name,
                 'username' => $this->generateUsername($request->name), // Generar el username
                 'email' => $request->email,
+                'email_verified_at' => now(), // Marcar como verificado automáticamente
                 'password' => Hash::make($request->password),
                 'sexo' => $request->sexo ?? null, // Si no se proporciona, será null
                 'tipo_nacionalidad' => $request->tipo_nacionalidad ?? 'nacional', // Valor predeterminado

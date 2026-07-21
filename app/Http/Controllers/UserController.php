@@ -82,6 +82,7 @@ class UserController extends Controller
             'name' => $validated['name'],
             'username' => $validated['username'],
             'email' => $validated['email'],
+            'email_verified_at' => now(),
             'password' => bcrypt($validated['password']),
             'edad' => $validated['edad'],
             'sexo' => $validated['sexo'],
@@ -121,7 +122,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return Inertia::render('Usuarios/UsuariosUpdatePage', [
+        return Inertia::render('Usuarios/UsuariosEditPage', [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -131,12 +132,15 @@ class UserController extends Controller
                 'sexo' => $user->sexo,
                 'telefono' => $user->telefono,
                 'tipo_nacionalidad' => $user->tipo_nacionalidad,
-                'email_verified_at' => $user->email_verified_at,
+                'email_verified_at' => $user->email_verified_at ? true : false,
                 'role' => $user->roles->first()?->name ?? 'cliente',
-            ],
+            ]
         ]);
     }
     
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, User $user)
     {
         $rules = [
@@ -192,6 +196,16 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if (auth()->id() === $user->id) {
+            return back()->withErrors(['error' => 'No puedes eliminar tu propia cuenta de usuario.']);
+        }
+
+        \App\Models\Cliente::where('id', $user->id)->delete();
+        \App\Models\Recepcionista::where('id', $user->id)->delete();
+
+        $user->delete();
+
+        return redirect()->route('usuarios.index')
+            ->with('success', 'Usuario eliminado correctamente.');
     }
 }
