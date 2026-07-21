@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
 use App\Models\User;
+use App\Mail\BienvenidaClienteMail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
@@ -95,6 +98,13 @@ class CustomAuthController extends Controller
                 'id' => $user->id,
             ]);
             DB::commit();
+
+            // Enviar correo de bienvenida al cliente
+            try {
+                Mail::to($user->email)->send(new BienvenidaClienteMail($user));
+            } catch (Exception $mailException) {
+                Log::error('Error enviando correo de bienvenida al cliente: ' . $mailException->getMessage());
+            }
 
             // Redirigir al login con el email como parámetro
             return Inertia::location(route('login', ['email' => $user->email]));
