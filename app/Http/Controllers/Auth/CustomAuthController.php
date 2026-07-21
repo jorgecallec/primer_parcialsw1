@@ -98,12 +98,15 @@ class CustomAuthController extends Controller
             ]);
             DB::commit();
 
-            // Enviar correo de bienvenida directo desde Laravel PHP
-            try {
-                Mail::to($user->email)->send(new BienvenidaClienteMail($user));
-            } catch (Exception $mailException) {
-                Log::error('Error enviando correo de bienvenida al cliente: ' . $mailException->getMessage());
-            }
+            // Enviar correo de bienvenida desde el código de Laravel (Backend Nativo)
+            // Usamos defer() para que se envíe en segundo plano y el usuario no tenga que esperar 30s si falla la conexión SMTP
+            defer(function () use ($user) {
+                try {
+                    Mail::to($user->email)->send(new BienvenidaClienteMail($user));
+                } catch (\Throwable $mailException) {
+                    Log::error('Error enviando correo de bienvenida: ' . $mailException->getMessage());
+                }
+            });
 
             // Redirigir al login con el email como parámetro
             return Inertia::location(route('login', ['email' => $user->email]));
