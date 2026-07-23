@@ -114,6 +114,8 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::post('/contacto', [\App\Http\Controllers\ContactController::class, 'send'])->name('contacto.send');
+
 Route::get('/login', function (Request $request) {
     return Inertia::render('auth/Login', [
         'email' => $request->query('email')

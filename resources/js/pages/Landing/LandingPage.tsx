@@ -9,7 +9,7 @@ import Restaurant from '@/shared/components/Restaurant'
 import Rooms from '@/shared/components/Rooms'
 import Testimonials from '@/shared/components/Testimonials'
 import Welcome from '@/shared/components/Welcome'
-import { Contact } from 'lucide-react'
+import Contact from '@/shared/components/Contact'
 
 const LandingPage = () => {
   return (

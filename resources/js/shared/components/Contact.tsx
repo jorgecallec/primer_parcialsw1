@@ -1,9 +1,31 @@
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, CheckCircle2 } from "lucide-react";
+import { useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 const Contact = () => {
+  const [success, setSuccess] = useState(false);
+  const { data, setData, post, processing, errors, reset } = useForm({
+    nombre: "",
+    email: "",
+    telefono: "",
+    mensaje: "",
+  });
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    post('/contacto', {
+      preserveScroll: true,
+      onSuccess: () => {
+        reset();
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 5000);
+      },
+    });
+  };
+
   return (
     <section id="contacto" className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -77,36 +99,61 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="animate-scale-in">
-            <form className="space-y-4 bg-card p-8 rounded-lg shadow-[var(--shadow-card)]">
+            <form onSubmit={submit} className="space-y-4 bg-card p-8 rounded-lg shadow-[var(--shadow-card)] relative">
+              {success && (
+                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-card/95 backdrop-blur-sm rounded-lg animate-fade-in">
+                  <CheckCircle2 className="w-16 h-16 text-green-500 mb-4" />
+                  <h4 className="text-xl font-semibold text-foreground">¡Mensaje Enviado!</h4>
+                  <p className="text-muted-foreground text-center mt-2 px-4">
+                    Gracias por contactarnos. Le responderemos a la brevedad posible.
+                  </p>
+                </div>
+              )}
+              
               <div>
                 <Input
                   type="text"
                   placeholder="Nombre completo"
                   className="w-full"
+                  value={data.nombre}
+                  onChange={(e) => setData("nombre", e.target.value)}
+                  required
                 />
+                {errors.nombre && <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>}
               </div>
               <div>
                 <Input
                   type="email"
                   placeholder="Email"
                   className="w-full"
+                  value={data.email}
+                  onChange={(e) => setData("email", e.target.value)}
+                  required
                 />
+                {errors.email && <div className="text-red-500 text-sm mt-1">{errors.email}</div>}
               </div>
               <div>
                 <Input
                   type="tel"
                   placeholder="Teléfono"
                   className="w-full"
+                  value={data.telefono}
+                  onChange={(e) => setData("telefono", e.target.value)}
                 />
+                {errors.telefono && <div className="text-red-500 text-sm mt-1">{errors.telefono}</div>}
               </div>
               <div>
                 <Textarea
                   placeholder="Mensaje"
                   className="w-full min-h-[120px]"
+                  value={data.mensaje}
+                  onChange={(e) => setData("mensaje", e.target.value)}
+                  required
                 />
+                {errors.mensaje && <div className="text-red-500 text-sm mt-1">{errors.mensaje}</div>}
               </div>
-              <Button variant="elegant" size="lg" className="w-full">
-                Enviar Mensaje
+              <Button variant="elegant" size="lg" className="w-full" disabled={processing}>
+                {processing ? "Enviando..." : "Enviar Mensaje"}
               </Button>
             </form>
           </div>
