@@ -65,101 +65,101 @@ export default function Folletos() {
     </header>
 
     <h2 class="section-title">🌟 Folletos para el Huésped</h2>
-    <div class="container">
-        <div class="card">
+    <div class="f-container">
+        <div class="f-card">
             <h3>1. Descubre Los Cedros</h3>
             <p>Tríptico informativo general con historia, misión y descripción del hotel.</p>
-            <button class="btn" onclick="openModal('modal-1')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-1')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>2. Catálogo de Habitaciones</h3>
             <p>Folleto visual con detalles de nuestras Suites, Habitaciones Matrimoniales y Simples.</p>
-            <button class="btn" onclick="openModal('modal-3')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-3')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>3. Programa de Membresías</h3>
             <p>Beneficios de ser cliente VIP (descuentos, late check-out).</p>
-            <button class="btn" onclick="openModal('modal-4')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-4')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>4. Servicios Premium</h3>
             <p>Información sobre Spa, Piscinas y áreas de relajación.</p>
-            <button class="btn" onclick="openModal('modal-5')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-5')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>5. Menú del Restaurante</h3>
             <p>Gastronomía de primer nivel. Room service mediante N8N.</p>
-            <button class="btn" onclick="openModal('modal-8')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-8')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>6. Eventos y Corporativo</h3>
             <p>Salones de conferencias, bodas y reuniones ejecutivas.</p>
-            <button class="btn" onclick="openModal('modal-6')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-6')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>7. Guía Turística Local</h3>
             <p>Lugares turísticos cerca del hotel y atracciones recomendadas.</p>
-            <button class="btn" onclick="openModal('modal-9')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-9')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>8. Somos Pet-Friendly</h3>
             <p>Normas y comodidades para los huéspedes que viajan con mascotas.</p>
-            <button class="btn" onclick="openModal('modal-10')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-10')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>9. Transporte y Traslados</h3>
             <p>Servicio de Shuttle al aeropuerto y tarifas de taxis seguros.</p>
-            <button class="btn" onclick="openModal('modal-11')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-11')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>10. Promociones de Temporada</h3>
             <p>Ofertas especiales de San Valentín, Invierno y Fin de Año.</p>
-            <button class="btn" onclick="openModal('modal-12')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-12')">Ver y Descargar</button>
         </div>
     </div>
 
     <h2 class="section-title">🤖 Folletos Tecnológicos y de N8N</h2>
-    <div class="container">
-        <div class="card">
+    <div class="f-container">
+        <div class="f-card">
             <h3>11. Innovación IA (N8N)</h3>
             <p>Folleto general sobre nuestro asistente virtual 24/7 impulsado por Groq.</p>
-            <button class="btn" onclick="openModal('modal-2')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-2')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>12. Manual del Usuario IA</h3>
             <p>Tríptico enseñando al cliente paso a paso cómo usar el bot en Telegram.</p>
-            <button class="btn" onclick="openModal('modal-13')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-13')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>13. Guía Rápida del Huésped</h3>
             <p>Horarios de check-in y contacto automatizado para asistencia.</p>
-            <button class="btn" onclick="openModal('modal-7')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-7')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>14. El Hotel del Futuro (B2B)</h3>
             <p>Folleto para inversores explicando cómo N8N ahorra horas de gestión administrativa.</p>
-            <button class="btn" onclick="openModal('modal-14')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-14')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>15. Seguridad y Privacidad</h3>
             <p>Garantía de protección de datos en nuestras bases de datos e IA.</p>
-            <button class="btn" onclick="openModal('modal-15')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-15')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>16. Automatización de Staff</h3>
             <p>Manual interno para Recepcionistas sobre cómo leer reportes automáticos.</p>
-            <button class="btn" onclick="openModal('modal-16')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-16')">Ver y Descargar</button>
         </div>
-        <div class="card">
+        <div class="f-card">
             <h3>17. Sostenibilidad Cero Papel</h3>
             <p>Impacto ecológico positivo gracias a reservas web y reportes PDF vía N8N.</p>
-            <button class="btn" onclick="openModal('modal-17')">Ver y Descargar</button>
+            <button class="f-btn" onclick="openModal('modal-17')">Ver y Descargar</button>
         </div>
         <!-- Card 18 -->
-        <div class="card" style="border: 2px solid var(--secondary); background: rgba(212, 175, 55, 0.1);">
+        <div class="f-card" style="border: 2px solid var(--secondary); background: rgba(212, 175, 55, 0.1);">
             <h3>18. Manual Técnico General (18 Páginas)</h3>
             <p>Dossier completo del software: Laravel, Modelos, Autenticación, Roles y N8N.</p>
-            <button class="btn" onclick="openModal('modal-18')">Ver y Descargar Documento Completo</button>
+            <button class="f-btn" onclick="openModal('modal-18')">Ver y Descargar Documento Completo</button>
         </div>
     </div>
 
