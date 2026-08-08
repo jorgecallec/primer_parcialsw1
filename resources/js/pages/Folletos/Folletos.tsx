@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Head } from "@inertiajs/react";
 import "../../../css/folletos.css";
+import Tripticos from "./Tripticos";
 
 export default function Folletos() {
     useEffect(() => {
@@ -854,6 +855,7 @@ export default function Folletos() {
         <div className="folletos-page">
             <Head title="Folletos - Hotel Los Cedros" />
             <div dangerouslySetInnerHTML={{ __html: rawHTML }} />
+            <Tripticos />
         </div>
     );
 }
