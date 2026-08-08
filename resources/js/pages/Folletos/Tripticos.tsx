@@ -29,41 +29,32 @@ export default function Tripticos() {
         };
 
         (window as any).descargarDirectamentePDF = function(tripticoId: string, nombreArchivo: string, btnElement: any) {
-            const spanText = btnElement.querySelector('span');
-            const loader = btnElement.querySelector('.loader');
-            if(spanText && loader) {
-                spanText.style.display = 'none';
-                loader.style.display = 'block';
-            }
-            
             const element = document.getElementById(tripticoId);
+            if(!element) return;
+            const parent = element.parentNode;
             
-            // @ts-ignore
-            if (typeof window.html2pdf === 'undefined') {
-                alert("La librería PDF aún se está cargando. Por favor, inténtalo en unos segundos.");
-                if(spanText && loader) {
-                    spanText.style.display = 'block';
-                    loader.style.display = 'none';
+            // Ocultar todo lo demás
+            const bodyChildren = document.body.children;
+            const originalStyles: any[] = [];
+            for (let i = 0; i < bodyChildren.length; i++) {
+                if (bodyChildren[i].tagName !== "SCRIPT" && bodyChildren[i].tagName !== "STYLE") {
+                    originalStyles.push({ el: bodyChildren[i] as HTMLElement, display: (bodyChildren[i] as HTMLElement).style.display });
+                    (bodyChildren[i] as HTMLElement).style.display = "none";
                 }
-                return;
             }
 
-            const opt = {
-                margin:       0,
-                filename:     nombreArchivo,
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
-                pagebreak:    { mode: 'css', before: '.triptico-page' }
-            };
-
-            // @ts-ignore
-            window.html2pdf().set(opt).from(element).save().then(() => {
-                if(spanText && loader) {
-                    spanText.style.display = 'block';
-                    loader.style.display = 'none';
+            document.body.appendChild(element);
+            
+            setTimeout(() => {
+                alert("IMPORTANTE:\n\n1. Selecciona 'Guardar como PDF' en la ventana que se abrirá.\n2. Diseño: Horizontal (Landscape).\n3. Tamaño de papel: A4.");
+                window.print();
+                
+                // Restaurar
+                parent?.appendChild(element);
+                for (let i = 0; i < originalStyles.length; i++) {
+                    originalStyles[i].el.style.display = originalStyles[i].display;
                 }
-            });
+            }, 500);
         };
 
         const handleOutsideClick = function(event: MouseEvent) {
@@ -368,10 +359,7 @@ export default function Tripticos() {
     <div class="modal-overlay" id="modal-t5">
         <div class="modal-content">
             <button class="close-btn" onclick="closeTripticoModal('modal-t5')">&times;</button>
-            <button class="download-btn" onclick="descargarDirectamentePDF('triptico-5', '5_PetFriendly.pdf', this)">
-                <span>📥 Descargar Archivo PDF Directamente</span>
-                <div class="loader"></div>
-            </button>
+            <button class="download-btn" onclick="descargarDirectamentePDF('triptico-5', 'triptico.pdf', this)">📥 Guardar como PDF (Impresión Perfecta)</button>
             
             <div class="triptico-container" id="triptico-5">
                 <div class="triptico-page">
