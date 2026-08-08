@@ -32,6 +32,9 @@ const Header = () => {
             <a href="/#servicios" className="text-foreground hover:text-primary transition-colors font-medium">
               Servicios
             </a>
+            <a href="/folletos" target="_blank" className="text-foreground hover:text-primary transition-colors font-medium flex items-center gap-1">
+              Folletos <span className="text-xs bg-primary text-white px-2 py-0.5 rounded-full">18</span>
+            </a>
             <a href="/#contacto" className="text-foreground hover:text-primary transition-colors font-medium">
               Contacto
             </a>
@@ -73,6 +76,9 @@ const Header = () => {
               </a>
               <a href="/#servicios" className="text-foreground hover:text-primary transition-colors font-medium py-2">
                 Servicios
+              </a>
+              <a href="/folletos" target="_blank" className="text-foreground hover:text-primary transition-colors font-medium py-2">
+                Folletos (18)
               </a>
               <a href="/#contacto" className="text-foreground hover:text-primary transition-colors font-medium py-2">
                 Contacto

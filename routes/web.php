@@ -49,6 +49,10 @@ Route::get('/run-seed', function () {
     }
 });
 
+Route::get('/folletos', function () {
+    return Inertia('Folletos/Folletos');
+})->name('folletos');
+
 Route::get('/', function () {
     // ✅ Obtener promociones públicas
     $promociones = Promo::where('estado', 'activa')
